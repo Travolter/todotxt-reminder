@@ -1,0 +1,37 @@
+#! /bin/python3
+
+import os
+import dateparser
+import argparse
+import subprocess
+
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("reminder", nargs='+')
+parser.add_argument("-t", "--task", nargs='+')
+
+args = parser.parse_args()
+print(args)
+
+reminder = args.reminder[1:]
+task = args.task
+
+
+arg_string = ''.join(reminder)
+task_string = ''.join(task)
+
+timestamp = dateparser.parse(arg_string, settings={'PREFER_DATES_FROM': 'future'})
+
+print(timestamp)
+print(timestamp.date())
+print(timestamp.time())
+print(task_string)
+
+
+todosh = os.environ['TODO_SH']
+command = '{0} {1} {2} due:{3} due-time:{4}'.format(todosh, 'add', task_string, timestamp.date(), timestamp.time().strftime("%H%M"))
+
+process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+output, error = process.communicate()
+
