@@ -1,11 +1,9 @@
-#! /bin/python3
+#!/usr/bin/env python3
 
 import os
 import dateparser
 import argparse
 import subprocess
-
-
 
 parser = argparse.ArgumentParser()
 parser.add_argument("reminder", nargs='+')
